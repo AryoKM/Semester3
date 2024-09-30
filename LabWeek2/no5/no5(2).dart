@@ -10,7 +10,7 @@ class pet {
 
 class anjing extends pet {
    sound() {
-    print("woof, bark, pinjam uang 100");
+    print("woof, bark, pinjam uang dule");
   }
 
    eat() {

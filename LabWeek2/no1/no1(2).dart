@@ -8,7 +8,7 @@ class Siswa {
   void present() {
     print('\nnama siswa: $nama');
     print('siswa ID: $IDsiswa');
-    print('Grade: $nilai');
+    print('nilai: $nilai');
   }
 
   bool lulus() {

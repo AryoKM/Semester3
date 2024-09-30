@@ -12,7 +12,7 @@ main() {
         String? title = stdin.readLineSync();
         stdout.write('Enter author: ');
         String? author = stdin.readLineSync();
-        stdout.write('Enter year: ');
+        stdout.write('Enter tahun: ');
         int? year = int.tryParse(stdin.readLineSync() ?? '');
         if (title != null && author != null && year != null) {
           library.addBook(Book(title, author, year));

@@ -7,23 +7,18 @@ main() {
   SavingsAccount myAccount = SavingsAccount(initialBalance, 5.0);
 
   while (true) {
-    print('\nPilih opsi:');
-    print('1. Setor uang');
-    print('2. Tarik uang');
-    print('3. Cek saldo');
-    print('4. Terapkan bunga');
-    print('5. Keluar');
-    stdout.write('Masukkan pilihan anda: ');
+    print('\npilih opsi:1. setonr uang\n2. tarik uang\n3. cek saldo\n4. terapkan bunga\n5. keluar');
+    stdout.write('masukkan pilihan anda: ');
     int choice = int.parse(stdin.readLineSync()!);
 
     switch (choice) {
       case 1:
-        stdout.write('Masukkan jumlah yang ingin disetor: ');
+        stdout.write('masukkan jumlah yang ingin disetor: ');
         double depositAmount = double.parse(stdin.readLineSync()!);
         myAccount.deposit(depositAmount);
         break;
       case 2:
-        stdout.write('Masukkan jumlah yang ingin ditarik: ');
+        stdout.write('masukkan jumlah yang ingin ditarik: ');
         double withdrawAmount = double.parse(stdin.readLineSync()!);
         myAccount.withdraw(withdrawAmount);
         break;
@@ -34,10 +29,10 @@ main() {
         myAccount.applyInterest();
         break;
       case 5:
-        print('Terima kasih telah menggunakan layanan kami.');
+        print('exit');
         return;
       default:
-        print('Pilihan tidak valid, coba lagi.');
+        print('invalid');
     }
   }
 }

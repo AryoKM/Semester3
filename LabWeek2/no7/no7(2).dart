@@ -1,22 +1,14 @@
 class Vehicle {
   int speed;
   Vehicle(this.speed);
-  move() { print('the vehicle is moving.');}
+  move() { print('kendaraan ini berjalan');}
   bool isFast() { return speed > 60;}
 }
 
-class Car extends Vehicle {
-  Car(int speed) : super(speed);
+class mobil extends Vehicle {
+  mobil(int speed) : super(speed);
+  move() {if (isFast()) {print('mobil ini berjalan dengan kecepatan yang cepat');} else {print('mobil ini berjalan dengan kecepatan normal');}}}
 
-  move() {
-    if (isFast()) {print('the car moves very fast');} else {print('the car moves at a normal speed');}}
-}
-
-class Bike extends Vehicle {
-  Bike(int speed) : super(speed);
-  
-  move() {
-    if (isFast()) {print('the bike moves very fast');}
-      else {print('the bike moves at a normal speed');}
-  }
-}
+class motor extends Vehicle {
+  motor(int speed) : super(speed);
+  move() {if (isFast()) {print('motor ini berjalan dengan kecepatan yang cepat');}else {print('motor ini berjalan dengan kecepatan normal');}}}

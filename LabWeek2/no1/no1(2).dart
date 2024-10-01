@@ -6,9 +6,7 @@ class Siswa {
   Siswa(this.nama, this.IDsiswa, this.nilai);
 
   void present() {
-    print('\nnama siswa: $nama');
-    print('siswa ID: $IDsiswa');
-    print('nilai: $nilai');
+    print('\nnama siswa: $nama\nsiswa ID: $IDsiswa\nnilai: $nilai');
   }
 
   bool lulus() {

@@ -1,20 +1,20 @@
 import 'dart:io'; import 'no7(2).dart';
 
 main() {
-  print('do you want to create a Car or Bike? (Enter "car" or "bike")');
+  print('masukkan jenis kendaraan yang ingin dinilai kecepatannya (masukkan "mobil" atau "motor")');
   String? choice = stdin.readLineSync()?.toLowerCase();
 
-  print('enter the speed of the vehicle:');
+  stdout.write('masukkan kecepatan kendaraan (km/h): ');
   int speed = int.parse(stdin.readLineSync()!);
 
   Vehicle? vehicle;
 
-  if (choice == 'car') {
-    vehicle = Car(speed);
-  } else if (choice == 'bike') {
-    vehicle = Bike(speed);
+  if (choice == 'mobil') {
+    vehicle = mobil(speed);
+  } else if (choice == 'motor') {
+    vehicle = motor(speed);
   } else {
-    print('invalid');
+    print('invalid, masukkan mobil atau motor');
     return;
   }
 

@@ -6,25 +6,25 @@ class BankAccount {
   deposit(double amount) {
     if (amount >= 50000) {
       _balance += amount;
-      print('Berhasil disetor: Rp ${amount}');
+      print('uang sebesar Rp ${amount} berhasil disetor');
     } else {
-      print('Jumlah setoran minimal adalah Rp 50000');
+      print('jumlah setoran minimal 50000');
     }
   }
 
   withdraw(double amount) {
     if (amount >= 50000 && amount <= _balance) {
       _balance -= amount;
-      print('Berhasil ditarik: Rp ${amount}');
+      print('berhasil ditarik: Rp ${amount}');
     } else if (amount < 50000) {
-      print('Jumlah penarikan minimal adalah Rp 50000');
+      print('jumlah penarikan minimal Rp 50000');
     } else {
-      print('Jumlah penarikan tidak valid');
+      print('invalid');
     }
   }
 
   checkBalance() {
-    print('Saldo anda saat ini: Rp ${_balance}');
+    print('saldo anda saat ini: Rp ${_balance}');
   }
 }
 
@@ -36,6 +36,6 @@ class SavingsAccount extends BankAccount {
   applyInterest() {
     double interest = _balance * interestRate / 100;
     deposit(interest);
-    print('Bunga sebesar Rp ${interest} telah diterapkan');
+    print('diterapkan bunga sebesar Rp ${interest}');
   }
 }

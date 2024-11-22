@@ -1,317 +1,310 @@
 import 'package:flutter/material.dart';
-void main() => runApp(const TrailblazerApp());
+import 'boardin_n_loadin.dart';
+import 'package:lottie/lottie.dart';
 
-class TrailblazerApp extends StatelessWidget {
-  const TrailblazerApp({super.key});
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: AppBarExample(),
       debugShowCheckedModeBanner: false,
+      home: OnboardingScreen(),
     );
   }
 }
 
-class AppBarExample extends StatelessWidget {
-  const AppBarExample({super.key});
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  OnboardingScreenState createState() => OnboardingScreenState();
+}
+
+class OnboardingScreenState extends State<OnboardingScreen> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < 2) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.ease,
+      );
+    } else {
+      // Navigate to the Login screen with a smooth transition
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
+          transitionDuration: const Duration(milliseconds: 500),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            const Color.fromARGB(255, 24, 25, 38), // Changed app bar color
-        leading: IconButton(
-          icon: const Icon(Icons.menu,
-              color: Color.fromARGB(
-                  255, 202, 211, 245)), // Changed menu icon color
-          tooltip: 'Menu',
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.home),
-                        title: Text('Home'),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.settings),
-                        title: Text('Settings'),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.info),
-                        title: Text('About'),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                );
+      backgroundColor: const Color.fromARGB(255, 36, 39, 58),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
               },
-            );
-          },
-        ),
-        title: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child:
-                  Image.asset('assets/logo.png', fit: BoxFit.cover, height: 30),
+              children: const [
+                OnboardingContent(
+                  image: "assets/uchu.json",
+                  title: "Welcome to the Astral Express!",
+                  description: "Discover amazing places.",
+                ),
+                OnboardingContent(
+                  image: "assets/purpleplanet.json",
+                  title: "Easy to Use",
+                  description: "Enjoy a seamless experience.",
+                ),
+                OnboardingContent(
+                  image: "assets/spacetravel.json",
+                  title: "Start Trailblazing",
+                  description: "Begin your journey today.",
+                ),
+              ],
             ),
-            const Text('Astral Express Crew',
-                style: TextStyle(color: Color.fromARGB(255, 202, 211, 245), fontSize: 17, fontFamily: 'DINPro')),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              color: Color.fromARGB(255, 202, 211, 245),
-            ),
-            tooltip: 'Search',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('This is a snackbar idek what this is')));
-            },
           ),
-          IconButton(
-            icon: const Icon(
-              Icons.tune,
-              color: Color.fromARGB(255, 202, 211, 245),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              3,
+              (index) => _buildDot(index),
             ),
-            tooltip: 'Go to the next page',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      backgroundColor: Colors.blueGrey, // Changed app bar color
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text(
-                        'This is the next page',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  );
-                },
-              ));
-            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(75.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  child: const Text(
+                    "Skip",
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 202, 211, 245),
+                        fontSize: 16,
+                        fontFamily: 'DINPro'),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: _nextPage,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _currentPage == 2 ? const Color.fromARGB(255, 202, 211, 245) : const Color.fromARGB(255, 138, 173, 248),
+                  ),
+                  child: Text(
+                    _currentPage == 2 ? "Finish" : "Next",
+                    style: const TextStyle(color: Color.fromARGB(255, 36, 39, 58)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(30.0),
-        color:
-            const Color.fromARGB(255, 36, 39, 58), // Changed background color
-        child: GridView.count(
-          crossAxisCount: 2,
+    );
+  }
+
+  Widget _buildDot(int index) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: _currentPage == index ? 16 : 8,
+      decoration: BoxDecoration(
+        color: _currentPage == index ? Colors.blue : Colors.grey,
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+  }
+}
+
+class OnboardingContent extends StatelessWidget {
+  final String image;
+  final String title;
+  final String description;
+
+  const OnboardingContent({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Lottie.asset(image, height: 300), // Changed from Lottie.network to Lottie.asset
+        const SizedBox(height: 20),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'DINPro'), // Changed text color to white
+        ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            description,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.white, fontFamily: 'DINPro'), // Changed text color to white
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Login Screen
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 36, 39, 58),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: Stelle'),
-                          ),
-                          body: const Center(
-                            child: 
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                radius: 75,
-                                backgroundImage: AssetImage('assets/stelle.png'),
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                'Stelle',
-                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple),
-                              ),
-                              SizedBox(height: 15),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 32),
-                                child: Text(
-                                  'I like my baseball bat',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 20, color: Colors.purple),
-                                ),
-                              ),
-                            ],
-                          ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/stelle.png'),
-                ),
+            Image.asset('assets/logo.png', fit: BoxFit.cover, height: 275),
+            const SizedBox(height: 35),
+            const Text(
+              'Welcome, Trailblazer',
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.w900,
+                color: Color.fromARGB(255, 202, 211, 245),
+                fontFamily: 'DINPro'
               ),
             ),
-                        Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: March 7th'),
-                          ),
-                          body: const Center(
-                            child: Text(
-                              'coming soon: information about March 7th',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/march.png'),
-                ),
+            const SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 55.0),
+              child: Column(
+                children: [
+                  TextField(
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 202, 211, 245),
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 202, 211, 245),
+                        fontFamily: 'DINPro'
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 202, 211, 245),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 202, 211, 245),
+                        ),
+                      ),
+                      prefixIcon: const Icon(Icons.account_circle,
+                          color: Color.fromARGB(255, 202, 211, 245)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 202, 211, 245),
+                    ),
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(
+                        color: Color.fromARGB(255, 202, 211, 245),
+                        fontFamily: 'DINPro'
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 202, 211, 245),
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 202, 211, 245),
+                        ),
+                      ),
+                      prefixIcon: const Icon(Icons.lock,
+                          color: Color.fromARGB(255, 202, 211, 245)),
+                    ),
+                  ),
+                ],
               ),
             ),
-                        Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: Dan Heng'),
-                          ),
-                          body: const Center(
-                            child: Text(
-                              'coming soon: information about Dan Heng',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/danheng.png'),
-                ),
-              ),
-            ),
-                        Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: Himeko'),
-                          ),
-                          body: const Center(
-                            child: Text(
-                              'coming soon: information about Himeko',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/himeko.png'),
-                ),
-              ),
-            ),
-                        Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: Welt'),
-                          ),
-                          body: const Center(
-                            child: Text(
-                              'coming soon: information about Welt',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/welt.png'),
-                ),
-              ),
-            ),
-                        Card(
-              margin: const EdgeInsets.all(15.0),
-              color: const Color.fromARGB(
-                  255, 73, 77, 100), // Changed background color of the card
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute<void>(
-                      builder: (BuildContext context) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 183, 189, 248), // Changed app bar color
-                            title: const Text('Member Details: Pompom'),
-                          ),
-                          body: const Center(
-                            child: Text(
-                              'coming soon: information about Pompom',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                          ),
-                        );
-                      },
-                    ));
-                  },
-                  child: Image.asset('assets/pompom.png'),
-                ),
+            const SizedBox(height: 25),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'don\'t have an account?',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 202, 211, 245),
+                        fontFamily: 'DINPro'
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TrailblazerApp()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 202, 211, 245),
+                      padding: const EdgeInsets.all(17.0),
+                    ),
+                    child: const Text(
+                      'Next',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 36, 39, 58),
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'DINPro'
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

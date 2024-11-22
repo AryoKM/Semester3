@@ -71,7 +71,7 @@ class AppBarExample extends StatelessWidget {
                   Image.asset('assets/logo.png', fit: BoxFit.cover, height: 30),
             ),
             const Text('Astral Express Crew',
-                style: TextStyle(color: Color.fromARGB(255, 202, 211, 245), fontSize: 20, fontFamily: 'DINPro')),
+                style: TextStyle(color: Color.fromARGB(255, 202, 211, 245), fontSize: 17, fontFamily: 'DINPro')),
           ],
         ),
         actions: <Widget>[
@@ -136,10 +136,30 @@ class AppBarExample extends StatelessWidget {
                             title: const Text('Member Details: Stelle'),
                           ),
                           body: const Center(
-                            child: Text(
-                              'coming soon: information about Stelle',
-                              style: TextStyle(fontSize: 24),
-                            ),
+                            child: 
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 75,
+                                backgroundImage: AssetImage('assets/stelle.png'),
+                              ),
+                              SizedBox(height: 20),
+                              Text(
+                                'Stelle',
+                                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple),
+                              ),
+                              SizedBox(height: 15),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 32),
+                                child: Text(
+                                  'I like my baseball bat',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 20, color: Colors.purple),
+                                ),
+                              ),
+                            ],
+                          ),
                           ),
                         );
                       },

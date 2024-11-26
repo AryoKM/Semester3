@@ -1,16 +1,19 @@
 # session4_labactivity1_stateful_and_stateless_widget
 
-A new Flutter project.
+dalam flutter, Widget terbagi menjadi dua yaitu *Stateless Widget* dan *Stateful Widget*. Stateless Widget adalah widget yang tidak dapat berubah setelah dibuat. Dengan begitu, eidget ini cocok digunakan untuk UI yang bersifat statis sperti teks, gambar dsb yang tidak memerlukan interaksi pengguna. Sedangkan stateful widget memiliki status yang dapat berubah selama life cycle nya sehingga cocok digunakan untuk elemen UI yang membutuhkan interaksi atau data dinamis seperti tombol yang menghitung jumlah klik dan tombol input forulir.
 
-## Getting Started
+Perubahan Data
+- Stateless Widget tidak bisa di ubah setelah di buat
+- Stateful Widget bisa berubah melalui status internal
 
-This project is a starting point for a Flutter application.
+State Management
+- Stateless Widget tidak memiliki internal state
+- Stateful Widget memiliki state yang dikelola dalam widget
 
-A few resources to get you started if this is your first Flutter project:
+Responsif
+- Stateless Widget tidak responsif terhadap interaksi
+- Stateful Widget responsif terhadap interaksi atau perubahan data
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Kinerja
+- Stateless Widget lebih ringan karena tidak memerlukan logical state
+- Stateful Widegt lebih berat dari pada stateless karena memelihara state

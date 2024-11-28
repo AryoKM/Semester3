@@ -118,70 +118,69 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
       backgroundColor: const Color(0xff24273a),
-      body: ReorderableListView.builder(
+      body: ReorderableListView(
         onReorder: (oldIndex, newIndex) =>
             globalState.reorderCounters(oldIndex, newIndex),
-        itemCount: globalState.counters.length,
-        itemBuilder: (context, index) {
-          final counter = globalState.counters[index];
-          return ListTile(
-            key: ValueKey(counter),
-            title: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    style: TextStyle(color: counter.color),
-                    decoration: InputDecoration(
-                      hintText: counter.label,
-                      hintStyle: TextStyle(color: counter.color),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: counter.color),
+        children: [
+          for (int index = 0; index < globalState.counters.length; index++)
+            ListTile(
+              key: ValueKey(globalState.counters[index]),
+              title: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      style: TextStyle(color: globalState.counters[index].color),
+                      decoration: InputDecoration(
+                        hintText: globalState.counters[index].label,
+                        hintStyle: TextStyle(color: globalState.counters[index].color),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: globalState.counters[index].color),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: globalState.counters[index].color),
+                        ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: counter.color),
-                      ),
+                      onSubmitted: (text) => globalState.updateLabel(index, text),
                     ),
-                    onSubmitted: (text) => globalState.updateLabel(index, text),
                   ),
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
-                    return ScaleTransition(child: child, scale: animation);
-                  },
-                  child: Text(
-                    counter.value.toString(),
-                    key: ValueKey<int>(counter.value),
-                    style: TextStyle(color: counter.color, fontSize: 18),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return ScaleTransition(scale: animation, child: child);
+                    },
+                    child: Text(
+                      globalState.counters[index].value.toString(),
+                      key: ValueKey<int>(globalState.counters[index].value),
+                      style: TextStyle(color: globalState.counters[index].color, fontSize: 18),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.add, color: globalState.counters[index].color),
+                    onPressed: () => globalState.incrementCounter(index),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.remove, color: globalState.counters[index].color),
+                    onPressed: () => globalState.decrementCounter(index),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.color_lens, color: globalState.counters[index].color),
+                    onPressed: () => _pickColor(context, globalState.counters[index].color, (color) {
+                      if (color != null) globalState.updateColor(index, color);
+                    }),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: globalState.counters[index].color),
+                    onPressed: () => globalState.removeCounter(index),
+                  ),
+                ],
+              ),
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.add, color: counter.color),
-                  onPressed: () => globalState.incrementCounter(index),
-                ),
-                IconButton(
-                  icon: Icon(Icons.remove, color: counter.color),
-                  onPressed: () => globalState.decrementCounter(index),
-                ),
-                IconButton(
-                  icon: Icon(Icons.color_lens, color: counter.color),
-                  onPressed: () => _pickColor(context, counter.color, (color) {
-                    if (color != null) globalState.updateColor(index, color);
-                  }),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: counter.color),
-                  onPressed: () => globalState.removeCounter(index),
-                ),
-              ],
-            ),
-          );
-        },
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: globalState.addCounter,

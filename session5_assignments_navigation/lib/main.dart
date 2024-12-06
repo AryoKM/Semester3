@@ -5,21 +5,21 @@ void main() {
   runApp(const MyApp());
 }
 
-// Main App
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Advanced Navigation App',
+      debugShowCheckedModeBanner: false,
+      title: 'Session 5 Assignments - Navigation',
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => const HomeScreen()),
         GetPage(name: '/details', page: () => const DetailsScreen()),
         GetPage(name: '/dynamic/:id', page: () => const DynamicScreen()),
       ],
-      unknownRoute: GetPage(name: '/notfound', page: () => const NotFoundScreen()),
+      unknownRoute: GetPage(name: '/notfound', page: () => const NotFoundScreen()), // just in case ada error
     );
   }
 }
@@ -49,15 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(title: const Text('Session 5 Assignment')),
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTap,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Section 1'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Section 2'),
-          BottomNavigationBarItem(icon: Icon(Icons.input), label: 'Input'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'First Page'),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Second Page'),
+          BottomNavigationBarItem(icon: Icon(Icons.input), label: 'Dynamic Screen'),
         ],
       ),
     );
@@ -70,11 +70,17 @@ class SectionOneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('This is the first page :D'),
+          ElevatedButton(
         onPressed: () {
-          Get.toNamed('/details', arguments: 'Data from Section 1');
+          Get.toNamed('/details', arguments: 'from page 1 :D');
         },
-        child: const Text('Go to Details Screen'),
+            child: const Text('Go to Details Screen'),
+          ),
+        ],
       ),
     );
   }
@@ -86,20 +92,39 @@ class SectionTwoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ElevatedButton(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('This is the second page :v'),
+          ElevatedButton(
         onPressed: () {
-          Get.toNamed('/details', arguments: 'Data from Section 2');
+          Get.toNamed('/details', arguments: 'from page 2 :v');
         },
-        child: const Text('Go to Details Screen'),
+            child: const Text('Go to Details Screen'),
+          ),
+        ],
       ),
     );
   }
 }
 
-class InputScreen extends StatelessWidget {
-  final TextEditingController _controller = TextEditingController();
-
+class InputScreen extends StatefulWidget {
   InputScreen({super.key});
+
+  @override
+  _InputScreenState createState() => _InputScreenState();
+}
+
+class _InputScreenState extends State<InputScreen> {
+  final TextEditingController _controller = TextEditingController();
+  List<int> _generatedScreens = [];
+
+  void _generateScreens() {
+    int count = int.tryParse(_controller.text) ?? 0;
+    setState(() {
+      _generatedScreens = List<int>.generate(count, (i) => i + 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,21 +132,35 @@ class InputScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: _controller,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Enter number of screens'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: TextField(
+              controller: _controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Enter number of screens'),
+            ),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
-              int count = int.tryParse(_controller.text) ?? 0;
-              for (int i = 1; i <= count; i++) {
-                Get.toNamed('/dynamic/$i');
-              }
-            },
+            onPressed: _generateScreens,
             child: const Text('Generate Screens'),
           ),
+          const SizedBox(height: 20),
+          if (_generatedScreens.isNotEmpty)
+            DropdownButton<int>(
+              hint: const Text('Select a screen'),
+              items: _generatedScreens.map((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text('Dynamic Screen $value'),
+                );
+              }).toList(),
+              onChanged: (int? value) {
+                if (value != null) {
+                  Get.toNamed('/dynamic/$value');
+                }
+              },
+            ),
         ],
       ),
     );

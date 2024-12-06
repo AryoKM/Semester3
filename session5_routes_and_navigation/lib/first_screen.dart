@@ -26,9 +26,9 @@ class _FirstScreenState extends State<FirstScreen> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.pushNamed(context, '/second');
           },
-          child: const Text('Go back to home screen'),
+          child: const Text('Go to Second Screen'),
         ),
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),

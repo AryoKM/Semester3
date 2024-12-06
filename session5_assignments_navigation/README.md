@@ -39,9 +39,9 @@ jika ingin mendownload aplikasi jadinya saja, tekan [link ini](https://cdn.disco
     - Halaman dinamis menampilkan teks seperti _"This is dynamic screen X"_ (X adalah angka layar yang dipilih).
 
 ### Contoh Penggunaan
-    1. Masuk ke aplikasi dan pilih Dynamic Screen di navigasi bawah.
-    2. Masukkan angka "2" lalu klik Generate Screens.
-    3. Pilih Dynamic Screen 1 dari dropdown untuk membuka layar dinamis pertama.
+1. Masuk ke aplikasi dan pilih Dynamic Screen di navigasi bawah.
+2. Masukkan angka "2" lalu klik Generate Screens.
+3. Pilih Dynamic Screen 1 dari dropdown untuk membuka layar dinamis pertama.
 
 ### Approach
 Aplikasi ini di buat menggunakan **GetX** untuk manajemen state dan navigasi. Struktur modularnya memanfaatkan **BottomNavigationBar** untuk navigasi utama, dengan dukungan **named routes** dan parameter dinamis untuk halaman interaktif. State dikelola melalui `StatefulWidget`, memungkinkan input pengguna menghasilkan konten dinamis, Dengan fallback halaman untuk rute yang tidak valid (error handling).

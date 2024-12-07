@@ -121,6 +121,9 @@ class _InputScreenState extends State<InputScreen> {
 
   void _generateScreens() {
     int count = int.tryParse(_controller.text) ?? 0;
+    if (count > 500) { // supaya tidak lag kalau terlalu banyak
+      count = 500;
+    }
     setState(() {
       _generatedScreens = List<int>.generate(count, (i) => i + 1);
     });
@@ -137,7 +140,7 @@ class _InputScreenState extends State<InputScreen> {
             child: TextField(
               controller: _controller,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Enter number of screens'),
+              decoration: const InputDecoration(labelText: 'Enter number of screens (max 500)'),
             ),
           ),
           const SizedBox(height: 20),

@@ -44,10 +44,10 @@ jika ingin mendownload aplikasi jadinya saja, tekan [link ini](https://cdn.disco
 3. Pilih Dynamic Screen 1 dari dropdown untuk membuka layar dinamis pertama.
 
 ### Approach
-Aplikasi ini di buat menggunakan **GetX** untuk manajemen state dan navigasi. Struktur modularnya memanfaatkan **BottomNavigationBar** untuk navigasi utama, dengan dukungan **named routes** dan parameter dinamis untuk halaman interaktif. State dikelola melalui `StatefulWidget`, memungkinkan input pengguna menghasilkan konten dinamis, Dengan fallback halaman untuk rute yang tidak valid (error handling).
+Aplikasi ini di buat menggunakan **GetX** untuk manajemen state dan navigasi. Struktur modularnya memanfaatkan **BottomNavigationBar** untuk navigasi utama, dengan dukungan **named routes** dan parameter dinamis untuk halaman interaktif. State dikelola melalui `StatefulWidget`, memungkinkan input pengguna menghasilkan konten dinamis, Dengan fallback halaman untuk rute yang tidak valid (error handling). Adapula pembatasan maksimum screen yang bisa di generate (500 pages) agar user tidak generate terlalu banyak hingga menimbulkan lag.
 
 ### Challenges
 Tantangan yang saya hadapi dalam pembuatan aplikasi ini adalah bagaimana cara mengimplementasikan cara untuk dengan gampang memilih dynamic screen yang telah di generate. Awalnya, saya ingin membuat page terpisah yang digunakan untuk menampilkan semua layar yang telah di generate, tetapi saya mendapatkan bug dimana jika saya kembali, page yang telah di generate tidak dihapuskan dari memori. Setelah beberapakali di utak atik, saya memutuskan untuk membuat dropdown sederhana. Adapula tantangan kecil yang saya hadapi yaitu mengirim data dari screen 1 dan screen 2 ke halaman detail.
 
 ### Advanced Features
-advanced features yang saya implementasikan adalah tombol menu dropdown sederhana agar user bisa dengan gampang memilih dan menavigasi dynamic screen yang telah di generate oleh hasil inputan.
+Advanced features yang saya implementasikan adalah tombol menu dropdown sederhana agar user bisa dengan gampang memilih dan menavigasi dynamic screen yang telah di generate oleh hasil inputan.
